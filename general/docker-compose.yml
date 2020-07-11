@@ -34,12 +34,13 @@ services:
             - "traefik.docker.network=proxy"
 
     traefik:
-      image: traefik:v2.0
+      image: traefik:latest
       container_name: traefik
       restart: unless-stopped
       security_opt:
         - no-new-privileges:true
       networks:
+        - utilities
         - proxy
       ports:
         - 80:80
