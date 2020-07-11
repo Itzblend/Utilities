@@ -1,5 +1,0 @@
-cd to your kibana/plugins directory.
-wget https://github.com/rashidkpc/timelion-extras/archive/master.zip
-unzip master.zip
-rm timelion-extras-master/gulpfile.js (This is a dev environment thing. Kibana won't start if you don't remove gulpfile.js)
-Start kibana (and delete that master.zip if you want, or not, it won't break anything)
