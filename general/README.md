@@ -1,3 +1,2 @@
-export VAULT_TOKEN=s.VSTyCTIpyODivYQ79oo1sE2
 export VAULT_ADDR='http://95.217.217.10:8200'
 
