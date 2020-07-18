@@ -91,13 +91,26 @@ services:
             - ./dags:/usr/local/airflow/dags
             # - ./plugins:/usr/local/airflow/plugins
         ports:
-            - "9090:8080"
+            - "9999:8080"
         command: webserver
         healthcheck:
             test: ["CMD-SHELL", "[ -f /usr/local/airflow/airflow-webserver.pid ]"]
             interval: 30s
             timeout: 30s
             retries: 3
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.airflow.entrypoints=http"
+            - "traefik.http.routers.airflow.rule=Host(`airflow.huhta-lauri.dev`)"
+            - "traefik.http.middlewares.airflow-https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.routers.airflow.middlewares=airflow-https-redirect"
+            - "traefik.http.routers.airflow-secure.entrypoints=https"
+            - "traefik.http.routers.airflow-secure.rule=Host(`airflow.huhta-lauri.dev`)"
+            - "traefik.http.routers.airflow-secure.tls=true"
+            - "traefik.http.routers.airflow-secure.tls.certresolver=http"
+            - "traefik.http.routers.airflow-secure.service=airflow"
+            - "traefik.http.services.airflow.loadbalancer.server.port=9999"
+            - "traefik.docker.network=proxy"
 
 networks:
   utilities:
