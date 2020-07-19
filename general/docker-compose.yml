@@ -65,11 +65,16 @@ services:
         - "traefik.http.routers.traefik-secure.service=api@internal"
 
     postgres:
-        image: postgres:9.6
+        image: postgres:12
+        container_name: mlkafka_postgres_airflow
         environment:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
+        networks:
+          - utilities
+        volumes:
+            - airflow_postgres:/var/lib/postgresql/data
         logging:
             options:
                 max-size: 10m
@@ -77,18 +82,26 @@ services:
 
     webserver:
         image: puckel/docker-airflow:1.10.9
+        container_name: mlkafka_airflow
         restart: always
         depends_on:
             - postgres
         environment:
             - LOAD_EX=n
             - EXECUTOR=Local
+            - AIRFLOW__CORE__FERNET_KEY='Y0cy8GGcax-CMFE_8yWIicaX0Fm6wio7T67y3NeKrVg='
+#            - SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
+        networks:
+          - utilities
         logging:
             options:
                 max-size: 10m
                 max-file: "3"
         volumes:
+            - mlkafka_airflow:/usr/local/airflow
+            - mlkafka_airflow_packages:/usr/local/lib/python3.7/site-packages
             - ./dags:/usr/local/airflow/dags
+            - ./airflow/entrypoint.sh:/entrypoint.sh
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "9999:8080"
@@ -109,8 +122,14 @@ services:
             - "traefik.http.routers.airflow-secure.tls=true"
             - "traefik.http.routers.airflow-secure.tls.certresolver=http"
             - "traefik.http.routers.airflow-secure.service=airflow"
-            - "traefik.http.services.airflow.loadbalancer.server.port=9999"
+            - "traefik.http.services.airflow.loadbalancer.server.port=8080"
             - "traefik.docker.network=proxy"
+
+
+volumes:
+  airflow_postgres:
+  mlkafka_airflow:
+  mlkafka_airflow_packages:
 
 networks:
   utilities:
