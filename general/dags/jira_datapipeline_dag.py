@@ -18,6 +18,15 @@ def get_issues(num_hours, **kwargs):
 
     print(data)
 
+def query_db(ds, **kwargs):
+    pg_hook = PostgresHook(postgres_conn_id='postgres_jira')
+    
+    query = """ SELECT issue_key FROM kafka.jira_issues;
+	"""
+
+    data = pg_hook.get_records(query)
+    print(data)
+
 
 args = {
     'owner': 'Magalorian',
@@ -41,4 +50,9 @@ t1 = PythonOperator(task_id='get_issues',
 		   op_kwargs={'num_hours': 24},
                    dag=dag)
 
+
+t2 = PythonOperator(task_id='query_db',
+                   provide_context=True,
+                   python_callable=query_db,
+                   dag=dag)
 
