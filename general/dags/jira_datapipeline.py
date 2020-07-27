@@ -10,15 +10,13 @@ default_args = {
     'email': ['huhta.lauri@gmail.com'],
     'email_on_failure': False,
     'email_on_retry': False,
-    'start_date': datetime(2020, 7, 25, 10, 0),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=1),
+    'start_date': datetime(2020, 7, 25, 10, 0)
 }
 
 
 dag = DAG(dag_id='jira_datapipeline',
           default_args=default_args,
-          schedule_interval='* * * * *',
+          schedule_interval='*/5 * * * *',
           dagrun_timeout=timedelta(minutes=20))
 
 

@@ -1,0 +1,1 @@
+{"errorMessages":["Error in the JQL Query: Expecting operator before the end of the query. The valid operators are '=', '!=', '<', '>', '<=', '>=', '~', '!~', 'IN', 'NOT IN', 'IS' and 'IS NOT'."],"errors":{}}
