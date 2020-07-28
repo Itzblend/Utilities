@@ -12,6 +12,30 @@ from airflow.hooks import HttpHook, PostgresHook
 from airflow.operators import PythonOperator
 from airflow.models import DAG
 
+@contextmanager
+def pg_cursor():
+    pg_hook = PostgresHook(postgres_conn_id='postgres_jira')
+    conn = pg_hook.get_conn()
+    cur = conn.cursor()
+    try:
+        yield cur
+        conn.commit()
+    except psycopg2.DatabaseError:
+        raise
+    finally:
+        cur.close()
+        conn.close()
+
+def format_query(filename: str, kwargs: Dict[str, str]) -> str:
+    """ Read an sql file and format it with values from kwargs.
+    """
+
+    with open(filename, 'r') as file:
+        query = file.read()
+
+    return query.format(**kwargs)
+
+
 def get_issues(num_hours, **kwargs):
     # Using predefined connection under Admin/Connections
     api_hook = HttpHook(http_conn_id='jira_issues', method='GET')
@@ -49,22 +73,15 @@ def load_issues(directory, **kwargs):
         # Each row in the db_tables corresponds to one revision
         json_data_rows = [json.dumps(x) for x in data['issues']]
         insertion_data = StringIO('\n'.join(json_data_rows))
-        print(json_data_rows)
-        print(insertion_data)
+        
+        with db_cursor(CONNECTION_STRING) as cur:
+            startTime = datetime.now()
+            cur.execute('CREATE TEMP TABLE staging(DATA JSONB) ON COMMIT DROP;')
+            cur.copy_expert("COPY staging FROM STDIN WITH CSV quote e'\x01' delimiter e'\x02'", insertion_data)
+            cur.execute(format_query('sql/load_jira_issues.sql', SQL_CONFIG))
+            print(f'Insertion took {datetime.now() - startTime} seconds')
 
-@contextmanager
-def pg_cursor():
-    pg_hook = PostgresHook(postgres_conn_id='postgres_jira')
-    conn = pg_hook.get_conn()
-    cur = conn.cursor()
-    try:
-        yield cur
-        conn.commit()
-    except psycopg2.DatabaseError:
-        raise
-    finally:
-        cur.close()
-        conn.close()
+
 
 def query_db(ds, **kwargs):
 
