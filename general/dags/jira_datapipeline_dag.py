@@ -6,6 +6,7 @@ import os
 import logging
 import shutil
 from contextlib import contextmanager
+from typing import Dict
 
 
 from airflow.hooks import HttpHook, PostgresHook
@@ -20,20 +21,18 @@ def pg_cursor():
     try:
         yield cur
         conn.commit()
-    except psycopg2.DatabaseError:
-        raise
     finally:
         cur.close()
         conn.close()
 
-def format_query(filename: str, kwargs: Dict[str, str]) -> str:
+def format_query(filename: str) -> str: #, kwargs: Dict[str, str]) -> str:
     """ Read an sql file and format it with values from kwargs.
     """
 
     with open(filename, 'r') as file:
         query = file.read()
 
-    return query.format(**kwargs)
+    return query #.format(**kwargs)
 
 
 def get_issues(num_hours, **kwargs):
@@ -73,12 +72,13 @@ def load_issues(directory, **kwargs):
         # Each row in the db_tables corresponds to one revision
         json_data_rows = [json.dumps(x) for x in data['issues']]
         insertion_data = StringIO('\n'.join(json_data_rows))
+        os.system('pwd')
         
-        with db_cursor(CONNECTION_STRING) as cur:
+        with pg_cursor() as cur:
             startTime = datetime.now()
             cur.execute('CREATE TEMP TABLE staging(DATA JSONB) ON COMMIT DROP;')
             cur.copy_expert("COPY staging FROM STDIN WITH CSV quote e'\x01' delimiter e'\x02'", insertion_data)
-            cur.execute(format_query('sql/load_jira_issues.sql', SQL_CONFIG))
+            cur.execute(format_query('/usr/local/airflow/dags/sql/load_jira_issues.sql'))
             print(f'Insertion took {datetime.now() - startTime} seconds')
 
 
@@ -109,7 +109,7 @@ dag = DAG(dag_id='test_jira',
 t1 = PythonOperator(task_id='get_issues',
                    provide_context=True,
                    python_callable=get_issues,
-                   op_kwargs={'num_hours': 168},
+                   op_kwargs={'num_hours': 320},
                    dag=dag)
 
 t2 = PythonOperator(task_id='load_issues',

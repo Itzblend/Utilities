@@ -15,7 +15,7 @@ INSERT INTO kafka_t.jira_issues_t (
     priority,
     status
 )
-SELECT 
+SELECT
     (data ->> 'id')::INT AS issue_id,
     data ->> 'key' AS issue_key,
     data #>> '{{fields, issuetype, name}}' AS issue_type,
