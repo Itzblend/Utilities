@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta
 import json
+from io import StringIO
+import sys
 import os
+import logging
 import shutil
-import logging.config
+from contextlib import contextmanager
 
 
 from airflow.hooks import HttpHook, PostgresHook
@@ -30,20 +33,52 @@ def get_issues(num_hours, **kwargs):
     with open(filename, 'w', encoding='utf-8') as file:
         json.dump(data, file)
 
-def query_db(ds, **kwargs):
+def load_issues(directory, **kwargs):
+
+    data_files = []
+    # Collect the files in the directory into a list
+    for dirpath, _, files in os.walk(directory):
+        for filename in files:
+            data_files.append(os.path.join(dirpath, filename))
+
+
+    for filename in data_files:
+        with open(filename, 'r') as file:
+            data = json.load(file)
+        # Convert json into newline delimited json format so that after insertion
+        # Each row in the db_tables corresponds to one revision
+        json_data_rows = [json.dumps(x) for x in data['issues']]
+        insertion_data = StringIO('\n'.join(json_data_rows))
+        print(json_data_rows)
+        print(insertion_data)
+
+@contextmanager
+def pg_cursor():
     pg_hook = PostgresHook(postgres_conn_id='postgres_jira')
-    
+    conn = pg_hook.get_conn()
+    cur = conn.cursor()
+    try:
+        yield cur
+        conn.commit()
+    except psycopg2.DatabaseError:
+        raise
+    finally:
+        cur.close()
+        conn.close()
+
+def query_db(ds, **kwargs):
+
     query = """ SELECT issue_key FROM kafka.jira_issues;
     """
 
-    data = pg_hook.get_records(query)
-    print(data)
-
+    with pg_cursor() as cur:
+        cur.execute(query)
+        print(cur.fetchall())
 
 args = {
     'owner': 'Magalorian',
     'depends_on_past': False,
-    'start_date': datetime(2020, 7, 25, 16, 10),
+    'start_date': datetime(2020, 7, 25, 16, 10)
 }
 
 
@@ -57,11 +92,18 @@ dag = DAG(dag_id='test_jira',
 t1 = PythonOperator(task_id='get_issues',
                    provide_context=True,
                    python_callable=get_issues,
-           op_kwargs={'num_hours': 168},
+                   op_kwargs={'num_hours': 168},
                    dag=dag)
 
+t2 = PythonOperator(task_id='load_issues',
+                    provide_context=True,
+                    python_callable=load_issues,
+                    op_kwargs={'directory': 'dag_data'},
+                    dag=dag
+                    )
 
-t2 = PythonOperator(task_id='query_db',
+
+t3 = PythonOperator(task_id='query_db',
                    provide_context=True,
                    python_callable=query_db,
                    dag=dag)
