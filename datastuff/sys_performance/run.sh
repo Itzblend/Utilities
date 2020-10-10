@@ -1,0 +1,1 @@
+nohup python read_perf.py &
