@@ -66,11 +66,13 @@ services:
 
     postgres:
         image: postgres:12
-        container_name: mlkafka_postgres_airflow
+        container_name: postgres_airflow
         environment:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
+        ports:
+          - 172.17.0.1:54322:5432
         networks:
           - utilities
         volumes:
@@ -82,7 +84,7 @@ services:
 
     webserver:
         image: puckel/docker-airflow:latest
-        container_name: mlkafka_airflow
+        container_name: airflow
         restart: always
         depends_on:
             - postgres

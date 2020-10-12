@@ -15,3 +15,4 @@
 [2020-07-31 05:55:37,949] {logging_mixin.py:112} INFO - [2020-07-31 05:55:37,949] {jira_datapipeline.py:54} INFO - Saving dag_data/dag_jira_data.json
 [2020-07-31 05:55:37,957] {python_operator.py:114} INFO - Done. Returned value was: None
 [2020-07-31 05:55:37,980] {taskinstance.py:1048} INFO - Marking task as SUCCESS.dag_id=DAG_jira, task_id=get_issues, execution_date=20200730T215900, start_date=20200731T055537, end_date=20200731T055537
+[2020-07-31 05:55:47,395] {logging_mixin.py:112} INFO - [2020-07-31 05:55:47,394] {local_task_job.py:103} INFO - Task exited with return code 0

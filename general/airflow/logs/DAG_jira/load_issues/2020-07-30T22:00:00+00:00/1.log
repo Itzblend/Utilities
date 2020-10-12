@@ -12,3 +12,4 @@
 [2020-07-31 05:55:42,079] {logging_mixin.py:112} INFO - Insertion took 0:00:00.018048 seconds
 [2020-07-31 05:55:42,082] {python_operator.py:114} INFO - Done. Returned value was: None
 [2020-07-31 05:55:42,099] {taskinstance.py:1048} INFO - Marking task as SUCCESS.dag_id=DAG_jira, task_id=load_issues, execution_date=20200730T220000, start_date=20200731T055541, end_date=20200731T055542
+[2020-07-31 05:55:51,742] {logging_mixin.py:112} INFO - [2020-07-31 05:55:51,741] {local_task_job.py:103} INFO - Task exited with return code 0

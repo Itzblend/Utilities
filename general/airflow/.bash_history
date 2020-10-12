@@ -15,3 +15,11 @@ ls
 pwd
 ls
 exit
+ls
+ls -a
+sudo su
+exit
+python
+python
+python2
+python
