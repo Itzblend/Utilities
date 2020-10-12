@@ -1,3 +1,4 @@
 acme.json
 *.log
 general/volumes/
+general/airflow/logs
