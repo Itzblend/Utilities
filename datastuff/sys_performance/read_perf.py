@@ -5,6 +5,8 @@ import time
 import psycopg2
 from io import StringIO
 import os
+from psycopg2 import OperationalError, errorcodes, errors
+
 
 dbhost = os.popen("vault kv get -field=dbhost kv/postgres").read()
 dbname = 'sys_data'
@@ -31,11 +33,17 @@ def init_db():
 def _pg_load_data(insertion_data):
     insertion_data = str(insertion_data)
     conn = psycopg2.connect(CONNECTION_STRING)
-    with conn.cursor() as cur:
-        cur.execute('CREATE TEMP TABLE staging(DATA json) ON COMMIT DROP;')
-        cur.execute(f"""INSERT INTO staging (DATA) VALUES ('{insertion_data}')""")
-        cur.execute(open('sql/insert_sys_info.sql', 'r').read())
 
+    try:
+        with conn.cursor() as cur:
+            cur.execute('CREATE TEMP TABLE staging(DATA json) ON COMMIT DROP;')
+            cur.execute(f"""INSERT INTO staging (DATA) VALUES ('{insertion_data}')""")
+            cur.execute(open('sql/insert_sys_info.sql', 'r').read())
+    except OperationalError as err:
+        # pass exception to function
+        #print_psycopg2_exception(err)
+      pass
+    finally:
         conn.commit()
         conn.close()
 
@@ -50,6 +58,9 @@ def read_cpu():
         cpu_stats['disk_used'] = cpu_stats['disk_usage'][1]
         cpu_stats['disk_free'] = cpu_stats['disk_usage'][2]
         cpu_stats['disk_percent'] = cpu_stats['disk_usage'][3]
+        cpu_stats['ram_used'] = psutil.virtual_memory()[3]
+        cpu_stats['ram_free'] = psutil.virtual_memory()[1]
+        cpu_stats['ram_percent'] = psutil.virtual_memory()[2]
         
 
         _pg_load_data(insertion_data=json.dumps(cpu_stats))

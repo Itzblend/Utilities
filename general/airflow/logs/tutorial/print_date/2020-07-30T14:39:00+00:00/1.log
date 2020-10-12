@@ -1,0 +1,19 @@
+[2020-07-30 14:40:06,978] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: tutorial.print_date 2020-07-30T14:39:00+00:00 [queued]>
+[2020-07-30 14:40:07,007] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: tutorial.print_date 2020-07-30T14:39:00+00:00 [queued]>
+[2020-07-30 14:40:07,007] {taskinstance.py:866} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-30 14:40:07,007] {taskinstance.py:867} INFO - Starting attempt 1 of 2
+[2020-07-30 14:40:07,008] {taskinstance.py:868} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-30 14:40:07,034] {taskinstance.py:887} INFO - Executing <Task(BashOperator): print_date> on 2020-07-30T14:39:00+00:00
+[2020-07-30 14:40:07,041] {standard_task_runner.py:53} INFO - Started process 2511 to run task
+[2020-07-30 14:40:07,164] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: tutorial.print_date 2020-07-30T14:39:00+00:00 [running]> 02f6ef7ded4c
+[2020-07-30 14:40:07,217] {bash_operator.py:82} INFO - Tmp dir root location: 
+ /tmp
+[2020-07-30 14:40:07,218] {bash_operator.py:105} INFO - Temporary script location: /tmp/airflowtmpbu8c6agu/print_date54lke9_b
+[2020-07-30 14:40:07,218] {bash_operator.py:115} INFO - Running command: date
+[2020-07-30 14:40:07,237] {bash_operator.py:122} INFO - Output:
+[2020-07-30 14:40:07,240] {bash_operator.py:126} INFO - Thu 30 Jul 2020 02:40:07 PM UTC
+[2020-07-30 14:40:07,241] {bash_operator.py:130} INFO - Command exited with return code 0
+[2020-07-30 14:40:07,262] {taskinstance.py:1048} INFO - Marking task as SUCCESS.dag_id=tutorial, task_id=print_date, execution_date=20200730T143900, start_date=20200730T144006, end_date=20200730T144007
+[2020-07-30 14:40:16,939] {logging_mixin.py:112} INFO - [2020-07-30 14:40:16,938] {local_task_job.py:103} INFO - Task exited with return code 0

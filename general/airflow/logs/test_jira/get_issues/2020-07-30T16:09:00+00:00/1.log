@@ -1,0 +1,19 @@
+[2020-07-30 16:10:05,464] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: test_jira.get_issues 2020-07-30T16:09:00+00:00 [queued]>
+[2020-07-30 16:10:05,504] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: test_jira.get_issues 2020-07-30T16:09:00+00:00 [queued]>
+[2020-07-30 16:10:05,504] {taskinstance.py:866} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-30 16:10:05,504] {taskinstance.py:867} INFO - Starting attempt 1 of 1
+[2020-07-30 16:10:05,504] {taskinstance.py:868} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-30 16:10:05,537] {taskinstance.py:887} INFO - Executing <Task(PythonOperator): get_issues> on 2020-07-30T16:09:00+00:00
+[2020-07-30 16:10:05,545] {standard_task_runner.py:53} INFO - Started process 31636 to run task
+[2020-07-30 16:10:05,690] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: test_jira.get_issues 2020-07-30T16:09:00+00:00 [running]> 02f6ef7ded4c
+[2020-07-30 16:10:05,741] {logging_mixin.py:112} INFO - HERE IS DELTA2020-07-17 08:10
+[2020-07-30 16:10:05,763] {logging_mixin.py:112} INFO - [2020-07-30 16:10:05,762] {base_hook.py:84} INFO - Using connection to: id: jira_issues. Host: https://jira.huhta-lauri.dev, Port: None, Schema: , Login: LauriHu, Password: XXXXXXXX, extra: None
+[2020-07-30 16:10:05,768] {logging_mixin.py:112} INFO - [2020-07-30 16:10:05,767] {http_hook.py:136} INFO - Sending 'GET' to url: https://jira.huhta-lauri.dev/rest/api/2/search?jql=updated>"2020-07-17 08:10"
+[2020-07-30 16:10:05,797] {logging_mixin.py:112} WARNING - /usr/local/lib/python3.7/site-packages/urllib3/connectionpool.py:1004: InsecureRequestWarning: Unverified HTTPS request is being made to host 'jira.huhta-lauri.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  InsecureRequestWarning,
+[2020-07-30 16:10:06,081] {logging_mixin.py:112} INFO - [2020-07-30 16:10:06,081] {jira_datapipeline_dag.py:55} INFO - Saving dag_data/dag_jira_data.json
+[2020-07-30 16:10:06,088] {python_operator.py:114} INFO - Done. Returned value was: None
+[2020-07-30 16:10:06,106] {taskinstance.py:1048} INFO - Marking task as SUCCESS.dag_id=test_jira, task_id=get_issues, execution_date=20200730T160900, start_date=20200730T161005, end_date=20200730T161006
+[2020-07-30 16:10:15,411] {logging_mixin.py:112} INFO - [2020-07-30 16:10:15,410] {local_task_job.py:103} INFO - Task exited with return code 0

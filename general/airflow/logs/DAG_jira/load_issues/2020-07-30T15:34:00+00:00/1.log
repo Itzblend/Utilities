@@ -1,0 +1,15 @@
+[2020-07-31 05:27:41,586] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: DAG_jira.load_issues 2020-07-30T15:34:00+00:00 [queued]>
+[2020-07-31 05:27:41,621] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: DAG_jira.load_issues 2020-07-30T15:34:00+00:00 [queued]>
+[2020-07-31 05:27:41,622] {taskinstance.py:866} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-31 05:27:41,622] {taskinstance.py:867} INFO - Starting attempt 1 of 1
+[2020-07-31 05:27:41,622] {taskinstance.py:868} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-31 05:27:41,653] {taskinstance.py:887} INFO - Executing <Task(PythonOperator): load_issues> on 2020-07-30T15:34:00+00:00
+[2020-07-31 05:27:41,660] {standard_task_runner.py:53} INFO - Started process 27065 to run task
+[2020-07-31 05:27:41,786] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: DAG_jira.load_issues 2020-07-30T15:34:00+00:00 [running]> 02f6ef7ded4c
+[2020-07-31 05:27:41,872] {logging_mixin.py:112} INFO - [2020-07-31 05:27:41,871] {base_hook.py:84} INFO - Using connection to: id: postgres_jira. Host: 95.217.217.10, Port: 54320, Schema: jira, Login: joeexotic, Password: XXXXXXXX, extra: None
+[2020-07-31 05:27:41,896] {logging_mixin.py:112} INFO - Insertion took 0:00:00.017270 seconds
+[2020-07-31 05:27:41,900] {python_operator.py:114} INFO - Done. Returned value was: None
+[2020-07-31 05:27:41,922] {taskinstance.py:1048} INFO - Marking task as SUCCESS.dag_id=DAG_jira, task_id=load_issues, execution_date=20200730T153400, start_date=20200731T052741, end_date=20200731T052741
+[2020-07-31 05:27:51,551] {logging_mixin.py:112} INFO - [2020-07-31 05:27:51,550] {local_task_job.py:103} INFO - Task exited with return code 0

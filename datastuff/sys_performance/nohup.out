@@ -1,0 +1,56 @@
+  File "read_perf.py", line 16
+    CONNECTION_STRING = f'dbname={dbname} user={dbuser} password={password} host={dbhost} port={port}'
+                                                                                                     ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "read_perf.py", line 59, in <module>
+    read_cpu()
+  File "read_perf.py", line 55, in read_cpu
+    _pg_load_data(insertion_data=json.dumps(cpu_stats))
+  File "read_perf.py", line 33, in _pg_load_data
+    conn = psycopg2.connect(CONNECTION_STRING)
+  File "/home/magalorian/.local/lib/python3.6/site-packages/psycopg2/__init__.py", line 127, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+Traceback (most recent call last):
+  File "read_perf.py", line 59, in <module>
+    read_cpu()
+  File "read_perf.py", line 55, in read_cpu
+    _pg_load_data(insertion_data=json.dumps(cpu_stats))
+  File "read_perf.py", line 37, in _pg_load_data
+    cur.execute(open('sql/insert_sys_info.sql', 'r').read())
+psycopg2.errors.UndefinedColumn: column "disk_total" of relation "system_info_t" does not exist
+LINE 5:     disk_total,
+            ^
+
+Traceback (most recent call last):
+  File "read_perf.py", line 59, in <module>
+    
+  File "read_perf.py", line 55, in read_cpu
+    cpu_stats['ram_percent'] = psutil.virtual_memory()[2]
+  File "read_perf.py", line 37, in _pg_load_data
+    cur.execute(open('sql/insert_sys_info.sql', 'r').read())
+psycopg2.errors.UndefinedColumn: column "ram_used_gb" of relation "system_info_t" does not exist
+LINE 9:     ram_used_gb,
+            ^
+
+  File "read_perf.py", line 53
+    cpu_stats['ram_used'] = psutil.virtual_memory()[3]
+                                                     ^
+TabError: inconsistent use of tabs and spaces in indentation
+Traceback (most recent call last):
+  File "read_perf.py", line 62, in <module>
+    read_cpu()
+  File "read_perf.py", line 58, in read_cpu
+    _pg_load_data(insertion_data=json.dumps(cpu_stats))
+  File "read_perf.py", line 33, in _pg_load_data
+    conn = psycopg2.connect(CONNECTION_STRING)
+  File "/home/magalorian/.local/lib/python3.6/site-packages/psycopg2/__init__.py", line 127, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+

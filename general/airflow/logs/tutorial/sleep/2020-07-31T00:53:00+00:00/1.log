@@ -1,0 +1,18 @@
+[2020-07-31 00:54:14,246] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: tutorial.sleep 2020-07-31T00:53:00+00:00 [queued]>
+[2020-07-31 00:54:14,289] {taskinstance.py:655} INFO - Dependencies all met for <TaskInstance: tutorial.sleep 2020-07-31T00:53:00+00:00 [queued]>
+[2020-07-31 00:54:14,290] {taskinstance.py:866} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-31 00:54:14,290] {taskinstance.py:867} INFO - Starting attempt 1 of 4
+[2020-07-31 00:54:14,290] {taskinstance.py:868} INFO - 
+--------------------------------------------------------------------------------
+[2020-07-31 00:54:14,333] {taskinstance.py:887} INFO - Executing <Task(BashOperator): sleep> on 2020-07-31T00:53:00+00:00
+[2020-07-31 00:54:14,341] {standard_task_runner.py:53} INFO - Started process 890 to run task
+[2020-07-31 00:54:14,502] {logging_mixin.py:112} INFO - Running %s on host %s <TaskInstance: tutorial.sleep 2020-07-31T00:53:00+00:00 [running]> 02f6ef7ded4c
+[2020-07-31 00:54:14,568] {bash_operator.py:82} INFO - Tmp dir root location: 
+ /tmp
+[2020-07-31 00:54:14,570] {bash_operator.py:105} INFO - Temporary script location: /tmp/airflowtmpg9c8bd_9/sleep7ilg4y8x
+[2020-07-31 00:54:14,570] {bash_operator.py:115} INFO - Running command: sleep 5
+[2020-07-31 00:54:14,588] {bash_operator.py:122} INFO - Output:
+[2020-07-31 00:54:19,594] {bash_operator.py:130} INFO - Command exited with return code 0
+[2020-07-31 00:54:19,627] {taskinstance.py:1048} INFO - Marking task as SUCCESS.dag_id=tutorial, task_id=sleep, execution_date=20200731T005300, start_date=20200731T005414, end_date=20200731T005419
+[2020-07-31 00:54:24,200] {logging_mixin.py:112} INFO - [2020-07-31 00:54:24,199] {local_task_job.py:103} INFO - Task exited with return code 0

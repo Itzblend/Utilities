@@ -100,9 +100,9 @@ services:
         volumes:
             - mlkafka_airflow:/usr/local/airflow
             - mlkafka_airflow_packages:/usr/local/lib/python3.7/site-packages
-            - ./dags:/usr/local/airflow/dags
-            - ./airflow/entrypoint.sh:/entrypoint.sh
-            - ./projects:/usr/local/airflow/projects
+            - ./airflow/:/usr/local/airflow/
+            #- ./airflow/entrypoint.sh:/entrypoint.sh
+            #- ./airflow/projects:/usr/local/airflow/projects
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "9999:8080"

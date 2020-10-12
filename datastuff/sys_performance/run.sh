@@ -1,1 +1,1 @@
-nohup python read_perf.py &
+nohup python3 read_perf.py &
