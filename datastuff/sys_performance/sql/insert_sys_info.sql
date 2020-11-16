@@ -8,7 +8,11 @@ INSERT INTO system_data_t.system_info_t (
     disk_percent,
     ram_used_gb,
     ram_free_gb,
-    ram_percent
+    ram_percent,
+    bytes_sent,
+    bytes_recv,
+    packets_sent,
+    packets_rec
 )
 SELECT 
     (data ->> 'cpu_percent')::NUMERIC AS cpu_percent,
@@ -19,7 +23,12 @@ SELECT
     (data ->> 'disk_percent')::NUMERIC AS disk_percent,
     TRUNC((data ->> 'ram_used')::NUMERIC / 1000000000, 2) AS ram_used_gb,
     TRUNC((data ->> 'ram_free')::NUMERIC / 1000000000, 2) AS ram_free_gb,
-    (data ->> 'ram_percent')::NUMERIC AS disk_free_gb
+    (data ->> 'ram_percent')::NUMERIC AS disk_free_gb,
+    TRUNC((data ->> 'bytes_sent')::NUMERIC / 1000000000, 2) AS bytes_sent,
+    TRUNC((data ->> 'bytes_recv')::NUMERIC / 1000000000, 2) AS bytes_recv,
+    (data ->> 'packets_sent')::NUMERIC AS packets_sent,
+    (data ->> 'packets_recv')::NUMERIC AS packets_rec
+
 FROM
     staging
 ON CONFLICT DO NOTHING
