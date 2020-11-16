@@ -8,6 +8,10 @@ CREATE TABLE IF NOT EXISTS system_data_t.system_info_t (
     ram_used_gb NUMERIC,
     ram_free_gb NUMERIC,
     ram_percent NUMERIC,
+    bytes_sent NUMERIC,
+    bytes_recv NUMERIC,
+    packets_sent NUMERIC,
+    packets_rec NUMERIC,
     timestamp TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'GMT-3')
 );
 

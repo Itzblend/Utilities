@@ -51,22 +51,30 @@ def _pg_load_data(insertion_data):
 
 def read_cpu():
     while True:
-        cpu_stats = {}
-        cpu_stats['cpu_percent'] = psutil.cpu_percent()
-        cpu_stats['cpu_freq'] = psutil.cpu_freq()[0]
-        cpu_stats['disk_usage'] = psutil.disk_usage('/')
-        cpu_stats['disk_total'] = cpu_stats['disk_usage'][0]
-        cpu_stats['disk_used'] = cpu_stats['disk_usage'][1]
-        cpu_stats['disk_free'] = cpu_stats['disk_usage'][2]
-        cpu_stats['disk_percent'] = cpu_stats['disk_usage'][3]
-        cpu_stats['ram_used'] = psutil.virtual_memory()[3]
-        cpu_stats['ram_free'] = psutil.virtual_memory()[1]
-        cpu_stats['ram_percent'] = psutil.virtual_memory()[2]
+        system_stats = {}
+        system_stats['cpu_percent'] = psutil.cpu_percent()
+        system_stats['cpu_freq'] = psutil.cpu_freq()[0]
+        system_stats['disk_usage'] = psutil.disk_usage('/')
+        system_stats['disk_total'] = system_stats['disk_usage'][0]
+        system_stats['disk_used'] = system_stats['disk_usage'][1]
+        system_stats['disk_free'] = system_stats['disk_usage'][2]
+        system_stats['disk_percent'] = system_stats['disk_usage'][3]
+        system_stats['ram_used'] = psutil.virtual_memory()[3]
+        system_stats['ram_free'] = psutil.virtual_memory()[1]
+        system_stats['ram_percent'] = psutil.virtual_memory()[2]
         
+        # Network stats
+        psutil_network = psutil.net_io_counters()
 
-        _pg_load_data(insertion_data=json.dumps(cpu_stats))
+        system_stats['bytes_sent'] = psutil_network[0]
+        system_stats['bytes_recv'] = psutil_network[1]
+        system_stats['packets_sent'] = psutil_network[2]
+        system_stats['packets_recv'] = psutil_network[3]
+
+        _pg_load_data(insertion_data=json.dumps(system_stats))
+
 
 
 if __name__ == '__main__':
-    read_cpu()
-    #init_db()
+    #read_cpu()
+    init_db()
