@@ -9,7 +9,7 @@ from psycopg2 import OperationalError, errorcodes, errors
 
 
 dbhost = os.popen("vault kv get -field=dbhost kv/postgres").read()
-dbname = 'sys_data'
+dbname = 'sys_info'
 dbuser = os.popen("vault kv get -field=dbuser kv/postgres").read()
 password = os.popen("vault kv get -field=password kv/postgres").read()
 port = os.popen("vault kv get -field=port kv/postgres").read()
@@ -39,13 +39,14 @@ def _pg_load_data(insertion_data):
             cur.execute('CREATE TEMP TABLE staging(DATA json) ON COMMIT DROP;')
             cur.execute(f"""INSERT INTO staging (DATA) VALUES ('{insertion_data}')""")
             cur.execute(open('sql/insert_sys_info.sql', 'r').read())
-    except OperationalError as err:
-        # pass exception to function
-        #print_psycopg2_exception(err)
-      pass
+    except psycopg2.Error as err:
+        print(err)
+        pass
+
     finally:
         conn.commit()
         conn.close()
+        time.sleep(30)
 
 
 def read_cpu():
@@ -66,6 +67,6 @@ def read_cpu():
         _pg_load_data(insertion_data=json.dumps(cpu_stats))
 
 
-
-read_cpu()
-#init_db()
+if __name__ == '__main__':
+    read_cpu()
+    #init_db()
